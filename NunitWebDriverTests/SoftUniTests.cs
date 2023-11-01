@@ -57,6 +57,7 @@ namespace NunitWebDriverTests
         }
 
         [Test]
+        //Tests where you try to log in with incorrect crededntials
         public void IncorrectUsernameLoginTest()
         {
             
@@ -69,6 +70,19 @@ namespace NunitWebDriverTests
             driver.FindElement(By.CssSelector("li")).Click();
             Assert.That(driver.FindElement(By.CssSelector("li")).Text, Is.EqualTo("Невалидно потребителско име или парола"));
 
+        }
+
+        [Test]
+
+        public void newTestCase()
+        {
+            driver.Navigate().GoToUrl("https://softuni.bg/");
+            driver.Manage().Window.Size = new System.Drawing.Size(1920, 1040);
+            driver.FindElement(By.CssSelector(".header-search-icon > img")).Click();
+            driver.FindElement(By.Id("search-input")).Click();
+            driver.FindElement(By.Id("search-input")).SendKeys("QA");
+            driver.FindElement(By.Id("search-input")).SendKeys(Keys.Enter);
+            Assert.That(driver.FindElement(By.CssSelector(".search-title")).Text, Is.EqualTo("Резултати от търсене на “QA”"));
         }
     }
 }
