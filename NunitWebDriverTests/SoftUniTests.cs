@@ -1,28 +1,23 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace NunitWebDriverTests
 {
     public class SoftUniTests
     {
         private WebDriver driver;
-
+     
         [OneTimeSetUp]
         public void OpenBrowserAndNavigate()
         {
             //Executes before each test
-    
-            this.driver = new ChromeDriver();
+        
+            driver = new ChromeDriver();
             driver.Url = "https://softuni.bg";
             //Maximize the window before running the tests for better results
-            try
-            {
-                driver.Manage().Window.Maximize();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occurred while maximizing the window: " + ex.Message);
-            }
+            driver.Manage().Window.Size = new System.Drawing.Size(1920, 1040);
 
         }
 
@@ -48,7 +43,7 @@ namespace NunitWebDriverTests
         public void AssertAboutPageTitle()
         {
             //Navigate to the element on the page 
-            var aboutElement = driver.FindElement(By.CssSelector("#nav-items-list > ul > li.page-header-items-list-element.dropdown-item.relative-dropdown > a > span.main-title");
+            var aboutElement = driver.FindElement(By.CssSelector("#nav-items-list > ul > li.page-header-items-list-element.dropdown-item.relative-dropdown > a > span.main-title"));
             //Click on the element on the page 
             aboutElement.Click();
 
@@ -60,6 +55,20 @@ namespace NunitWebDriverTests
 
             driver.Quit();
         }
-       
+
+        [Test]
+        public void IncorrectUsernameLoginTest()
+        {
+            
+            driver.FindElement(By.CssSelector(".softuni-btn-primary:nth-child(1)")).Click();
+            driver.FindElement(By.Id("username")).Click();
+            driver.FindElement(By.Id("username")).SendKeys("HFHFHF");
+            driver.FindElement(By.Id("password-input")).Click();
+            driver.FindElement(By.Id("password-input")).SendKeys("HFHFHF");
+            driver.FindElement(By.CssSelector(".softuni-btn")).Click();
+            driver.FindElement(By.CssSelector("li")).Click();
+            Assert.That(driver.FindElement(By.CssSelector("li")).Text, Is.EqualTo("Ќевалидно потребителско име или парола"));
+
+        }
     }
 }
